@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Domain Adsterra</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>📊 Statistik Domain Adsterra</h2>
+  <table border="1" id="table"></table>
+
+  <script>
+  fetch("/.netlify/functions/getStats")
+    .then(res => res.json())
+    .then(data => {
+      const table = document.getElementById("table");
+      table.innerHTML = "<tr><th>Tanggal</th><th>Impressions</th><th>Clicks</th><th>Revenue ($)</th></tr>";
+      if (data.data) {
+        data.data.forEach(r => {
+          table.innerHTML += `<tr>
+            <td>${r.date}</td>
+            <td>${r.impressions}</td>
+            <td>${r.clicks}</td>
+            <td>${r.revenue}</td>
+          </tr>`;
+        });
+      } else {
+        table.innerHTML = "<tr><td colspan='4'>Tidak ada data</td></tr>";
+      }
+    });
+  </script>
+</body>
+</html>
